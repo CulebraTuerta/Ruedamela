@@ -9,17 +9,22 @@ public class PlayerController : MonoBehaviour
     float moveX, moveY; //esto es para determinar los movimento en los ejes... (aunque deberia ser z no? ya que el y es vertical)
 
     public float jumpForce;
+    public AudioSource sonidoSalto;
+    public AudioSource sonidoGolpeSuelo;
     public int maxJumps = 2; //doblesalto
     private int countJump = 0;
     private bool isGround;
     public float airControl=0.5f;
     public float resistenciaVelocidadLineal = 0.95f;
-    public Vector3 posicionInicial;
 
-    private void Awake()
-    {
-        posicionInicial = transform.position; //esto funciona, esta guardando la posicion inicial... 
-    }
+    private float tiempoUltimoSonido = 0f;
+    public float intervaloSonido = 0.1f; // tiempo mínimo entre sonidos (en segundos)
+    //public Vector3 posicionInicial;
+
+    //private void Awake()
+    //{
+    //    posicionInicial = transform.position; //esto funciona, esta guardando la posicion inicial... 
+    //}
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -60,6 +65,7 @@ public class PlayerController : MonoBehaviour
     {
         if (countJump<maxJumps)
         {
+            sonidoSalto.Play();
             rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z); //con esto mantengo los valores en x,z, ya que en Y los vamos a modificar
             rb.AddForce(Vector3.up*jumpForce,ForceMode.VelocityChange); //el up si le pones el mouse encima le aparece un vector normal en Y, osea que solo toca aplicarle la fuerza salto
             countJump++;
@@ -70,6 +76,11 @@ public class PlayerController : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Ground"))
         {
+            if (Time.time - tiempoUltimoSonido > intervaloSonido)
+            {
+                sonidoGolpeSuelo.Play();
+                tiempoUltimoSonido = Time.time;
+            }
             countJump = 0;
             isGround = true;
         }        
@@ -87,11 +98,16 @@ public class PlayerController : MonoBehaviour
     {
         if(other.gameObject.CompareTag("Point")) //no olvidar poner este tag al objeto point
         {
-            other.gameObject.SetActive(false);
+            //other.gameObject.SetActive(false); //esto lo dejamos de hacer por el gamemanager
+            Points point = other.gameObject.GetComponent<Points>(); //estoy metiendo al objeto points dentro de la variable point. el objeto es other... qu een este caso es al objeto con el que colisione y tenga tag Point
+            if (point != null)
+            {
+                point.GetPoints(); //con esto voy al objeto point, busco su metodo get point y dentro del script points este metodo solo hace el agregar un valor al texto, que es manejado por el gamemanager
+            }
         }
-        if (other.gameObject.CompareTag("Enemy"))
-        {
-            rb.transform.position = posicionInicial; //el profe hizo un codigo aparte, del enemigo, que llamaba al player, pero creo que es mejor aqui mismo...
-        }
+        //if (other.gameObject.CompareTag("Enemy"))
+        //{
+        //    rb.transform.position = posicionInicial; //el profe hizo un codigo aparte, del enemigo, que llamaba al player, pero creo que es mejor aqui mismo...
+        //}
     }
 }
