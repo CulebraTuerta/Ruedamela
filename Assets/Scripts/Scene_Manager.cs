@@ -3,24 +3,11 @@ using UnityEngine.SceneManagement;
 
 public class Scene_Manager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void CloseApp() //esto cierra el juego
     {
-        Debug.Log("Cerrando Juego");
+        //Debug.Log("Cerrando Juego");
         Application.Quit();
     }
-
     public void LoadLevel1()
     {
         SceneManager.LoadScene("Level_1");
