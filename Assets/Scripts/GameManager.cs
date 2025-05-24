@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
         if (instance == null)
         {
             instance = this; //con esto hago referencia a este mismo objeto
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -28,6 +28,11 @@ public class GameManager : MonoBehaviour
     }
 
     private void Start()
+    {
+        UpdateScoreText();
+    }
+
+    private void Update()
     {
         UpdateScoreText();
     }
