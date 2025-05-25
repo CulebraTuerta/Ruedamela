@@ -104,7 +104,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6892c189f37d3274dabeb1b0af301562, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  velocidadRotacion: 0.005
+  velocidadRotacion: 0.05
   pointSound: {fileID: 8300000, guid: 97f08f9dc2a0b8f4499ac7d21196f54d, type: 3}
   lastPointSound: {fileID: 8300000, guid: a9ad9191e0aff2844b47d5b88fb8fdc4, type: 3}
   pointParticles: {fileID: 8771972552311404798, guid: f7cda0afc98cfbc4b873448974bd2c2d, type: 3}

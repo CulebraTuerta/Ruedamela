@@ -49,12 +49,12 @@ public class Points : MonoBehaviour
             Destroy(particulas.gameObject,particulas.main.duration); //y luego borramos como lo anterior, pero con la duracion del clip de particulas como tiempo de espera.
         }
 
-
-
-
-
         GameManager.instance.AddPoint(1); //recordar que el instance, es el gamemanager actual
         Destroy(gameObject);
 
     }
+
+
+
+
 }

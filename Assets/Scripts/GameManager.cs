@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
         UpdateScoreText();
 
         Application.targetFrameRate = 60;
-        QualitySettings.vSyncCount = 1;
+        QualitySettings.vSyncCount = 0;
     }
 
     private void Update()
@@ -49,6 +49,15 @@ public class GameManager : MonoBehaviour
     public bool GetUltimoPunto() //con esto puedo saber si queda una gema por recoger
     {
         if(TotalScore-score==1)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public bool TodasLasGemasRecogidas()
+    {
+        if(TotalScore==score)
         {
             return true;
         }

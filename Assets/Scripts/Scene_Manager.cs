@@ -16,6 +16,18 @@ public class Scene_Manager : MonoBehaviour
     {
         SceneManager.LoadScene("Level_2");
     }
+    public void LoadLevel3()
+    {
+        SceneManager.LoadScene("Level_3");
+    }
+    public void LoadLevel4()
+    {
+        SceneManager.LoadScene("Level_4");
+    }
+    public void LoadLevel5()
+    {
+        SceneManager.LoadScene("Level_5");
+    }
     public void LoadMainMenu()
     {
         SceneManager.LoadScene("MainMenu");
@@ -29,4 +41,11 @@ public class Scene_Manager : MonoBehaviour
     {
         Time.timeScale = 1; //esto hace que la ejecucion del juego continue a ritmo normal
     }
+    //public void nextLevel()
+    //{
+    //    SceneManager.Load
+    //}
+
+
+
 }

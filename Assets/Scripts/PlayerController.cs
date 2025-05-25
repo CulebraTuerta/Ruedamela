@@ -11,15 +11,20 @@ public class PlayerController : MonoBehaviour
     public float jumpForce;
     public AudioSource sonidoSalto;
     public AudioSource sonidoGolpeSuelo;
+    public AudioSource sonidoVictoria;
     public int maxJumps = 2; //doblesalto
     private int countJump = 0;
     private bool isGround;
     public float airControl=0.5f;
     public float resistenciaVelocidadLineal = 0.95f;
+    public ParticleSystem fuegosArtificiales;
+    public GameObject panelDeVictoria;
+    public GameObject panelUI;
+    //private bool esperandoInput = false;
 
     private float tiempoUltimoSonido = 0f;
     public float intervaloSonido = 0.1f; // tiempo mínimo entre sonidos (en segundos)
-    //public Vector3 posicionInicial;
+    //public Vector3 posicionMeta;
 
     //private void Awake()
     //{
@@ -30,8 +35,19 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>(); //con esto al objeto de tipo rigidbody que se cargue al rb, obtendremos sus valores y sus propiedades.
-        
+        fuegosArtificiales.Pause();
+
     }
+
+    //private void Update()
+    //{
+    //    if (esperandoInput && (Keyboard.current.anyKey.wasPressedThisFrame || Mouse.current.leftButton.wasPressedThisFrame))
+    //    {
+    //        panelUI.SetActive(false);
+    //        panelDeVictoria.SetActive(true);
+    //        //esperandoInput=false;
+    //    }
+    //}
 
     // FixedUpdate es llamado a cada instante, y no frame por frame.. por ende es mas adecuado para cuando se necesita trabajar con fuerzas
     //o propiedades del fixed body
@@ -74,12 +90,17 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.CompareTag("Ground"))
+        if(collision.gameObject.CompareTag("Ground")||collision.gameObject.CompareTag("Meta"))
         {
             if (Time.time - tiempoUltimoSonido > intervaloSonido)
             {
                 sonidoGolpeSuelo.Play();
                 tiempoUltimoSonido = Time.time;
+                
+            }
+            if (collision.gameObject.CompareTag("Meta") && GameManager.instance.TodasLasGemasRecogidas())
+            {
+                Victoria();
             }
             countJump = 0;
             isGround = true;
@@ -88,7 +109,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionExit(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Ground"))
+        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Meta"))
         {
             isGround = false;
         }
@@ -105,9 +126,32 @@ public class PlayerController : MonoBehaviour
                 point.GetPoints(); //con esto voy al objeto point, busco su metodo get point y dentro del script points este metodo solo hace el agregar un valor al texto, que es manejado por el gamemanager
             }
         }
-        //if (other.gameObject.CompareTag("Enemy"))
+
+        //if(other.gameObject.CompareTag("Meta"))  //desactive esto porque lo estoy activando directamente desde el momento que lo toca y tiene las gemas
         //{
-        //    rb.transform.position = posicionInicial; //el profe hizo un codigo aparte, del enemigo, que llamaba al player, pero creo que es mejor aqui mismo...
+        //    if(GameManager.instance.TodasLasGemasRecogidas()) //has cogido todas las gemas
+        //    {
+        //        Victoria();                
+        //    }
         //}
+    }
+
+    private void Victoria()
+    {
+        this.enabled = false; // Desactiva este script para evitar más inputs ,sin esto detectaba error ya que seguia recibiendo una velocidad lineal
+        rb.isKinematic = true; //con esto lo friseo
+        sonidoVictoria.Play(); 
+        fuegosArtificiales.Play();
+
+        Camera.main.GetComponent<CameraOrbit>().enabled = true; //con esto activamos el script de la camara girando //NO ESTA GIRANDO!!!
+
+        //esperandoInput = true;
+
+        panelUI.SetActive(false);
+        panelDeVictoria.SetActive(true);
+
+        //hacer girar la camara alrededor de la plataforma
+        //activar "paneldevictoria" despues de el jugador haga clic o aprete alguna tecla (no olvidar desactivar panel UI desde aqui tambien
+
     }
 }

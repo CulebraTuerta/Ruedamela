@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class GravedadExtra : MonoBehaviour
 {
-    public float multiplicadorGravedad = 2f;
+    public float multiplicadorGravedad = 2.5f;
     Rigidbody rb;
 
     void Start()
